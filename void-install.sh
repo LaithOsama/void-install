@@ -20,7 +20,7 @@ e2fsprogs dracut ethtool iputils usbutils pciutils ncurses less traceroute kdb f
 
 echo -e "\e[32m  Doing some configuration ..."
 mkdir -pv /mnt/etc/sysctl.d
-echo"
+echo "
 vm.vfs_cache_pressure=500
 vm.swappiness=100
 vm.dirty_background_ratio=1
