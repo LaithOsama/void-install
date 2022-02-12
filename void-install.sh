@@ -15,8 +15,8 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 base-files bash openssh dhcpcd \
-e2fsprogs dracut ethtool iputils usbutils pciutils ncurses grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 bash openssh dhcpcd kmod acpid neovim \
+e2fsprogs dracut ethtool iputils usbutils pciutils ncurses less traceroute kdb file grub os-prober ntfs-3g
 
 echo -e "\e[32m  Doing some configuration ..."
 mkdir -pv /mnt/etc/sysctl.d
@@ -86,11 +86,11 @@ xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libX
 xwallpaper sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip pcmanfm firefox-esr git \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission man-db pfetch fzf bc picom opendoas cantarell-fonts \
-htop alsa-utils void-repo-nonfree && xbps-install -Sy unrar
+htop alsa-utils bash void-repo-nonfree && xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ..."
 xbps-install -y xf86-video-intel mesa intel-ucode libva-intel-driver intel-video-accel linux-firmware-intel
-read -p "Do you need extra packages like libreoffice, kodi and some games ? [y/N]" answer
+read -p "Do you need extra packages like libreoffice, kodi and some games ? [y/N] " answer
 if [[ $answer = y ]] ; then
   xbps-install -y libreoffice-calc fractal kodi supertuxkart sauerbraten
 fi
