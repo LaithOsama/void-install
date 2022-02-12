@@ -26,7 +26,7 @@ vm.swappiness=100
 vm.dirty_background_ratio=1
 vm.dirty_ratio=50" >> /mnt/etc/sysctl.d/00-sysctl.conf
 mkdir -pv /mnt/etc/modprobe.d
-echo"
+echo "
 # Disable watchdog
 install iTCO_wdt /bin/true
 install iTCO_vendor_support /bin/true
