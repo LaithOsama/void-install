@@ -16,7 +16,7 @@ ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
 XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 bash openssh dhcpcd kmod acpid neovim \
-e2fsprogs dracut ethtool iputils usbutils pciutils ncurses less traceroute kdb file grub os-prober ntfs-3g
+e2fsprogs dracut ethtool iputils usbutils pciutils ncurses grub os-prober ntfs-3g
 
 echo -e "\e[32m  Doing some configuration ..."
 mkdir -pv /mnt/etc/sysctl.d
@@ -83,10 +83,10 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ..."
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
-xwallpaper sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip pcmanfm firefox-esr git \
+hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission man-db pfetch fzf bc picom opendoas cantarell-fonts \
-htop alsa-utils bash void-repo-nonfree && xbps-install -Sy unrar
+htop alsa-utils void-repo-nonfree && xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ..."
 xbps-install -y xf86-video-intel mesa intel-ucode libva-intel-driver intel-video-accel linux-firmware-intel
@@ -99,7 +99,7 @@ rm -rf /var/cache/xbps/*
 echo -e "\e[32m  Setting up users, mouse speed, keyboard langs ... etc."
 passwd
 echo "permit nopass :wheel" >> /etc/doas.conf
-useradd -m -G wheel -s /bin/zsh laith
+useradd -m -G wheel audio -s /bin/zsh laith
 passwd laith
 mkdir -pv /etc/X11/xorg.conf.d
 echo 'Section "InputClass"
@@ -130,6 +130,7 @@ xbps-reconfigure -fa
 echo -e "\e[32m  Enabling services ..."
 ln -s /etc/sv/alsa /etc/runit/runsvdir/default/
 ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
+
 vi3_path=/home/laith/void-install3.sh
 sed '1,/^#part3$/d' void-install2.sh > $vi3_path
 chown laith:laith $vi3_path
