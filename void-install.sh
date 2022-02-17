@@ -89,7 +89,7 @@ zsh transmission man-db pfetch fzf bc picom opendoas cantarell-fonts \
 htop alsa-utils void-repo-nonfree && xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ..."
-xbps-install -y xf86-video-intel mesa intel-ucode libva-intel-driver intel-video-accel linux-firmware-intel
+xbps-install -y xf86-video-intel mesa mesa-vaapi intel-ucode intel-video-accel linux-firmware-intel
 read -p "Do you need extra packages like libreoffice, kodi and some games ? [y/N] " answer
 if [[ $answer = y ]] ; then
   xbps-install -y libreoffice-calc fractal kodi supertuxkart sauerbraten
