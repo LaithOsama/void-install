@@ -18,33 +18,6 @@ cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
 XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 bash openssh dhcpcd kmod acpid neovim \
 e2fsprogs dracut ethtool iputils usbutils pciutils ncurses grub os-prober ntfs-3g
 
-echo -e "\e[32m  Doing some configuration ..."
-mkdir -pv /mnt/etc/sysctl.d
-echo "
-vm.vfs_cache_pressure=500
-vm.swappiness=100
-vm.dirty_background_ratio=1
-vm.dirty_ratio=50" >> /mnt/etc/sysctl.d/00-sysctl.conf
-mkdir -pv /mnt/etc/modprobe.d
-echo "
-# Disable watchdog
-install iTCO_wdt /bin/true
-install iTCO_vendor_support /bin/true
-# Disable Camera
-blacklist uvcvideo
-# Disable Bluetooth
-blacklist btusb
-blacklist btrtl
-blacklist btbcm
-blacklist btintel
-blacklist bluetooth
-# Disable Wi-Fi
-blacklist iwlwifi
-# Disable nouveau
-blacklist nouveau
-# Disable sound over HDMI
-blacklist snd_hdmi_lpe_audio" >> /mnt/etc/modprobe.d/blacklist.conf
-
 echo -e "\e[32m  Entering the Chroot ..."
 mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -85,7 +58,7 @@ echo -e "\e[32m  Install Packages ..."
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission man-db pfetch fzf bc picom opendoas cantarell-fonts \
+zsh transmission man-db pfetch fzf bc picom opendoas \
 htop alsa-utils void-repo-nonfree && xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ..."
