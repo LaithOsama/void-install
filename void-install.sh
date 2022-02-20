@@ -43,7 +43,7 @@ echo "laptop" > /etc/hostname
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-ech 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
+echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
