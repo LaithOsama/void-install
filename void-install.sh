@@ -15,7 +15,7 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses gcc make wget fakeroot xz eudev lz4 bc flex bison elfutils pahole intel-ucode elfutils-devel grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses gcc make wget fakeroot xz eudev lz4 bc flex bison elfutils pahole intel-ucode elfutils-devel void-repo-nonfree grub os-prober ntfs-3g
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -30,6 +30,7 @@ exit
 printf '\033c'
 
 echo -e "\e[32m  Installing my custom kernel ...\e[0m"
+xbps-install -y intel-ucode
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.231.tar.xz
 tar xvf linux-4.19.231.tar.xz -C /usr/lib
 cd /usr/lib/linux-4.19.231 && wget https://raw.githubusercontent.com/LaithOsama/.config/main/.config
@@ -52,14 +53,14 @@ echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
-xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
+xbps-install -Sy xorg-minimal pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission mdocml pfetch fzf bc picom opendoas dejavu-fonts-ttf slock \
-htop alsa-utils void-repo-nonfree xbacklight && xbps-install -Sy unrar
+htop alsa-utils xbacklight unrar
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
-xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver intel-ucode
+xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
 read -p "Do you need extra packages like libreoffice, gimp and kodi ? [y/N] " answer
 if [[ $answer = y ]] ; then
   xbps-install -y libreoffice-calc gimp fractal kodi thunderbird
