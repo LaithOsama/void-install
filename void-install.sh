@@ -15,7 +15,7 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses gcc make wget fakeroot xz eudev lz4 bc flex bison elfutils pahole intel-ucode elfutils-devel void-repo-nonfree grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses gcc make wget fakeroot xz eudev lz4 bc flex bison elfutils pahole elfutils-devel void-repo-nonfree grub os-prober ntfs-3g
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
