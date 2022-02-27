@@ -62,7 +62,7 @@ echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver intel-ucode
 read -p "Do you need extra packages like libreoffice, gimp and kodi ? [y/N] " answer
 if [[ $answer = y ]] ; then
-  xbps-install -y libreoffice-calc gimp fractal kodi
+  xbps-install -y libreoffice-calc gimp fractal kodi thunderbird
 fi
 rm -rf /var/cache/xbps/*
 
