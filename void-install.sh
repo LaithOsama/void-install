@@ -15,9 +15,7 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.4 bash openssh dhcpcd neovim \
-dracut e2fsprogs iputils ncurses grub os-prober ntfs-3g
-
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses fakeroot xz eudev lz4 bc flex bison elfutils elfutils-devel grub os-prober ntfs-3g
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -30,6 +28,13 @@ exit
 
 #part2
 printf '\033c'
+
+echo -e "\e[32m  Installing my custom kernel ...\e[0m"
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.231.tar.xz
+tar xvf linux-4.19.231.tar.xz -C /usr/lib
+cd /usr/lib/linux-4.19.23 && wget https://raw.githubusercontent.com/LaithOsama/.config/main/.config
+make -j5 && cp -v arch/x86/boot/bzImage /boot/vmlinuz-linux-4.19.231
+cd /
 
 echo -e "\e[32m  Configuring fstab ...\e[0m"
 cp /proc/mounts /etc/fstab
@@ -50,8 +55,8 @@ echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission mdocml pfetch fzf bc picom opendoas dejavu-fonts-ttf \
-htop alsa-utils void-repo-nonfree && xbps-install -Sy unrar
+zsh transmission mdocml pfetch fzf bc picom opendoas dejavu-fonts-ttf slock \
+htop alsa-utils void-repo-nonfree xbacklight && xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver intel-ucode
@@ -95,6 +100,7 @@ ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
 rm -rf /etc/sv/agetty-tty3
 rm -rf /etc/sv/agetty-tty4
 rm -rf /etc/sv/agetty-tty5
+rm -rf /etc/sv/agetty-tty6
 rm -rf /etc/sv/sshd
 
 vi3_path=/home/laith/void-install3.sh
