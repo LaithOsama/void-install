@@ -15,7 +15,10 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssh dhcpcd neovim e2fsprogs ncurses gcc make wget fakeroot xz eudev lz4 bc flex bison elfutils pahole elfutils-devel void-repo-nonfree grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash libressl eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+wget https://github.com/LaithOsama/kernel/raw/main/linux5.10-5.10.101_1.x86_64-musl.xbps
+xbps-rindex --add /linux5.10-5.10.101_1.x86_64-musl.xbps
+XBPS_ARCH=$ARCH xbps-install -r /mnt --repository / linux5.10
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -28,14 +31,6 @@ exit
 
 #part2
 printf '\033c'
-
-echo -e "\e[32m  Installing my custom kernel ...\e[0m"
-xbps-install -y intel-ucode
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.231.tar.xz
-tar xvf linux-4.19.231.tar.xz -C /usr/lib
-cd /usr/lib/linux-4.19.231 && wget https://raw.githubusercontent.com/LaithOsama/.config/main/.config
-make -j5 && cp -v arch/x86/boot/bzImage /boot/vmlinuz-linux-4.19.231
-cd /
 
 echo -e "\e[32m  Configuring fstab ...\e[0m"
 cp /proc/mounts /etc/fstab
@@ -53,11 +48,11 @@ echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
-xbps-install -Sy xorg-minimal pkg-config libXft-devel libX11-devel libXinerama-devel \
+xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission mdocml pfetch fzf bc picom opendoas dejavu-fonts-ttf slock \
-htop alsa-utils xbacklight unrar
+zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
+htop alsa-utils xbacklight unclutter-xfixes unrar
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
@@ -89,8 +84,6 @@ echo 'Section "InputClass"
   	Option "XkbVariant" ",qwerty"
   	Option "XkbOptions" "grp:win_space_toggle"
 EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
-wget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts
-doas cat hosts >> /etc/hosts && rm hosts
 
 echo -e "\e[32m  Making sure that all installed packages are configured properly ...\e[0m"
 xbps-reconfigure -fa
