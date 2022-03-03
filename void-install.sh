@@ -49,7 +49,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
-hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip firefox git pcmanfm \
+hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
 htop alsa-utils xbacklight unclutter-xfixes unrar
