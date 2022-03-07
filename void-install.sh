@@ -17,10 +17,10 @@ mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
 XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssl eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
 wget https://github.com/LaithOsama/kernel/raw/main/linux5.10-5.10.101_1.x86_64-musl.xbps
-xbps-rindex --add /linux5.10-5.10.101_1.x86_64-musl.xbps
-XBPS_ARCH=$ARCH xbps-install -r /mnt --repository / linux5.10
+xbps-rindex --add linux5.10-5.10.101_1.x86_64-musl.xbps
+XBPS_ARCH=$ARCH xbps-install -r /mnt --repository /root/ linux5.10
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
-mount --rbind /sys /mnt/sys && mount --make-rslave /mnt/sys
+mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
 mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
 cp /etc/resolv.conf /mnt/etc/
