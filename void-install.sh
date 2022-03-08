@@ -52,7 +52,7 @@ xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libX
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
-htop alsa-utils xbacklight unclutter-xfixes
+htop alsa-utils xbacklight unclutter-xfixes st-terminfo
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
@@ -84,9 +84,6 @@ echo 'Section "InputClass"
   	Option "XkbVariant" ",qwerty"
   	Option "XkbOptions" "grp:win_space_toggle"
 EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
-
-echo -e "\e[32m  Making sure that all installed packages are configured properly ...\e[0m"
-xbps-reconfigure -fa
 
 echo -e "\e[32m  Enabling and Disabling services ...\e[0m"
 ln -s /etc/sv/alsa /etc/runit/runsvdir/default/
