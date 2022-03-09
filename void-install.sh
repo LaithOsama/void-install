@@ -52,7 +52,7 @@ xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libX
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
 zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
-htop alsa-utils xbacklight unclutter-xfixes st-terminfo
+htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
