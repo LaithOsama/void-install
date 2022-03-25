@@ -24,7 +24,7 @@ mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
 mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
 cp /etc/resolv.conf /mnt/etc/
-sed '1,/^#part2$/d' void-install.sh > /mnt/void-install2.sh
+sed '1,/^#part2$/d' void-musl-install.sh > /mnt/void-install2.sh
 chmod +x /mnt/void-install2.sh
 PS1='(chroot) # ' chroot /mnt /bin/bash ./void-install2.sh
 exit 
