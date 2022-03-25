@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #part1
 printf '\033c'
@@ -11,21 +11,23 @@ mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 
 echo -e "\e[32m  Doing the base installation ...\e[0m"
-REPO=https://alpha.de.repo.voidlinux.org/current
-ARCH=x86_64
+REPO=https://alpha.de.repo.voidlinux.org/current/musl
+ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux4.9 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal bash openssl eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+wget https://github.com/LaithOsama/kernel/raw/main/linux5.16-5.16.16_1.x86_64-musl.xbps
+xbps-rindex --add linux5.10-5.10.101_1.x86_64-musl.xbps
+XBPS_ARCH=$ARCH xbps-install -r /mnt --repository /root/ linux5.10
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
 mount --rbind /proc /mnt/proc && mount --make-rslave /mnt/proc
 cp /etc/resolv.conf /mnt/etc/
-sed '1,/^#part2/d' void-install.sh > /mnt/void-install2.sh
+sed '1,/^#part2$/d' void-install.sh > /mnt/void-install2.sh
 chmod +x /mnt/void-install2.sh
 PS1='(chroot) # ' chroot /mnt /bin/bash ./void-install2.sh
-exit
-
+exit 
 
 #part2
 printf '\033c'
@@ -35,12 +37,10 @@ cp /proc/mounts /etc/fstab
 nvim /etc/fstab
 echo "tmpfs    /tmp     tmpfs   defaults,nosuid,nodev   0 0" >> /etc/fstab
 
-echo -e "\e[32m  Setting up locales, localtime and hostname ... etc.\e[0m"
+echo -e "\e[32m  Setting up localtime and hostname ... etc.\e[0m"
 ln -sf /usr/share/zoneinfo/Asia/Baghdad /etc/localtime
 echo "laptop" > /etc/hostname
-nvim /etc/rc.conf
-nvim /etc/default/libc-locales
-xbps-reconfigure -f glibc-locales
+
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
@@ -51,8 +51,8 @@ echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission mdocml pfetch fzf bc xz xcompmgr opendoas slock alsa-utils htop \
-xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions void-repo-nonfree; xbps-install -Sy unrar steam
+zsh transmission mdocml pfetch fzf bc xz xcompmgr opendoas dejavu-fonts-ttf slock \
+htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
@@ -70,19 +70,19 @@ usermod -g audio laith
 passwd laith
 mkdir -pv /etc/X11/xorg.conf.d
 echo 'Section "InputClass"
-        Identifier "My Mouse"
-        MatchIsPointer "yes"
-        Option "AccelerationProfile" "-1"
-        Option "AccelerationScheme" "none"
-        Option "AccelSpeed" "-1"
+	Identifier "My Mouse"
+	MatchIsPointer "yes"
+	Option "AccelerationProfile" "-1"
+	Option "AccelerationScheme" "none"
+	Option "AccelSpeed" "-1"
 EndSection' >> /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 echo 'Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "us,ar"
-        Option "XkbModel" "pc105"
-        Option "XkbVariant" ",qwerty"
-        Option "XkbOptions" "grp:win_space_toggle"
+  	Identifier "system-keyboard"
+  	MatchIsKeyboard "on"
+  	Option "XkbLayout" "us,ar"
+  	Option "XkbModel" "pc105"
+  	Option "XkbVariant" ",qwerty"
+  	Option "XkbOptions" "grp:win_space_toggle"
 EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
 
 echo -e "\e[32m  Enabling and Disabling services ...\e[0m"
@@ -107,7 +107,7 @@ cd $HOME
 rm -rf *.* .*
 
 echo -e "\e[32m  Downloading and managing dotfiles ...\e[0m"
-git clone https://github.com/LaithOsama/.dotfiles.git
+git clone https://github.com/LaithOsama/.dotfiles.git 
 cd .dotfiles && stow .
 cd ..
 
