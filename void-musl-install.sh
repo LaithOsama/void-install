@@ -40,6 +40,7 @@ echo "tmpfs    /tmp     tmpfs   defaults,nosuid,nodev   0 0" >> /etc/fstab
 echo -e "\e[32m  Setting up localtime and hostname ... etc.\e[0m"
 ln -sf /usr/share/zoneinfo/Asia/Baghdad /etc/localtime
 echo "laptop" > /etc/hostname
+nvim /etc/rc.conf
 
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
@@ -49,9 +50,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
-hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
-mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission mdocml pfetch fzf bc xz xcompmgr opendoas dejavu-fonts-ttf slock \
+hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
+mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf \
+zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
 htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
@@ -88,10 +89,6 @@ EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
 echo -e "\e[32m  Enabling and Disabling services ...\e[0m"
 ln -s /etc/sv/alsa /etc/runit/runsvdir/default/
 ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
-rm -rf /etc/sv/agetty-tty3
-rm -rf /etc/sv/agetty-tty4
-rm -rf /etc/sv/agetty-tty5
-rm -rf /etc/sv/agetty-tty6
 rm -rf /etc/sv/sshd
 
 vi3_path=/home/laith/void-install3.sh
