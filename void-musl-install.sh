@@ -49,7 +49,7 @@ echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
-xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
+xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf \
 zsh transmission youtube-viewer setxkbmap xmodmap xcape mdocml pfetch fzf bat bc xz picom opendoas dejavu-fonts-ttf slock \
@@ -89,7 +89,10 @@ EndSection' >> /etc/X11/xorg.conf.d/00-keyboard.conf
 echo -e "\e[32m  Enabling and Disabling services ...\e[0m"
 ln -s /etc/sv/alsa /etc/runit/runsvdir/default/
 ln -s /etc/sv/dhcpcd /etc/runit/runsvdir/default/
-rm -rf /etc/sv/sshd
+rm -rf /etc/sv/agetty-tty3
+rm -rf /etc/sv/agetty-tty4
+rm -rf /etc/sv/agetty-tty5
+rm -rf /etc/sv/agetty-tty6
 
 vi3_path=/home/laith/void-install3.sh
 sed '1,/^#part3$/d' void-install2.sh > $vi3_path
