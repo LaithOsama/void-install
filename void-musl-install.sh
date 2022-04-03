@@ -18,7 +18,7 @@ cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
 XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-minimal bash openssl eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
 wget https://github.com/LaithOsama/kernel/raw/main/linux5.16-5.16.16_1.x86_64-musl.xbps
 xbps-rindex --add linux5.16-5.16.16_1.x86_64-musl.xbps
-XBPS_ARCH=$ARCH xbps-install -r /mnt --repository /root/ linux5.16
+XBPS_ARCH=$ARCH xbps-install -r /mnt --repository /root/ -y linux5.16
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -52,7 +52,7 @@ echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf \
-zsh transmission mdocml pfetch fzf bc xz picom opendoas dejavu-fonts-ttf slock \
+zsh transmission youtube-viewer setxkbmap xmodmap xcape mdocml pfetch fzf bat bc xz picom opendoas dejavu-fonts-ttf slock \
 htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
