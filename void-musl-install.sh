@@ -51,8 +51,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo \
 hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
-mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf \
-zsh transmission youtube-viewer setxkbmap xmodmap xcape mdocml pfetch fzf bat bc xz picom opendoas dejavu-fonts-ttf slock \
+mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf curl ueberzug \
+zsh transmission setxkbmap xmodmap xcape mdocml pfetch fzf bat jq bc xz picom opendoas dejavu-fonts-ttf slock \
 htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
