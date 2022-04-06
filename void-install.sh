@@ -9,13 +9,14 @@ mkfs.ext4 /dev/sda2
 mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
-
+clear
 echo -e "\e[32m  Doing the base installation ...\e[0m"
 REPO=https://alpha.de.repo.voidlinux.org/current
 ARCH=x86_64
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
 XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux4.9 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+clear
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -29,30 +30,31 @@ exit
 
 #part2
 printf '\033c'
-
+clear
 echo -e "\e[32m  Configuring fstab ...\e[0m"
 cp /proc/mounts /etc/fstab
 nvim /etc/fstab
 echo "tmpfs    /tmp     tmpfs   defaults,nosuid,nodev   0 0" >> /etc/fstab
-
+clear
 echo -e "\e[32m  Setting up locales, localtime and hostname ... etc.\e[0m"
 ln -sf /usr/share/zoneinfo/Asia/Baghdad /etc/localtime
 echo "laptop" > /etc/hostname
 nvim /etc/rc.conf
 nvim /etc/default/libc-locales
 xbps-reconfigure -f glibc-locales
+clear
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
-
+clear
 echo -e "\e[32m  Install Packages ...\e[0m"
-xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel \
-hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git pcmanfm \
-mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools \
-zsh transmission mdocml pfetch fzf bc xz xcompmgr opendoas slock alsa-utils htop \
-xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions void-repo-nonfree; xbps-install -Sy unrar steam
+xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo ffmpeg \
+hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
+mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf curl ueberzug \
+zsh transmission setxkbmap xmodmap xcape mdocml pfetch fzf bat jq bc xz picom opendoas dejavu-fonts-ttf slock \
+htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions void-repo-nonfree; xbps-install -Sy unrar
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
@@ -61,7 +63,7 @@ if [[ $answer = y ]] ; then
   xbps-install -y libreoffice-calc gimp fractal kodi
 fi
 rm -rf /var/cache/xbps/*
-
+clear
 echo -e "\e[32m  Setting up users, mouse speed, keyboard langs ... etc.\e[0m"
 passwd
 echo "permit nopass :wheel" >> /etc/doas.conf
@@ -105,7 +107,7 @@ exit
 printf '\033c'
 cd $HOME
 rm -rf *.* .*
-
+clear
 echo -e "\e[32m  Downloading and managing dotfiles ...\e[0m"
 git clone https://github.com/LaithOsama/.dotfiles.git
 cd .dotfiles && stow .
