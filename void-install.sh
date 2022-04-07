@@ -104,12 +104,16 @@ git clone --depth=1 https://github.com/LaithOsama/dwm.git ~/.local/src/dwm
 doas make -C ~/.local/src/dwm install
 git clone --depth=1 https://github.com/LaithOsama/st.git ~/.local/src/st
 doas make -C ~/.local/src/st install
+doas xbps-install -y fribidi-devel
 git clone --depth=1 https://github.com/LaithOsama/dmenu.git ~/.local/src/dmenu
 doas make -C ~/.local/src/dmenu install
 git clone --depth=1 https://github.com/LaithOsama/slstatus.git ~/.local/src/slstatus
 doas make -C ~/.local/src/slstatus install
 echo -e "\e[32m  We're almost done, don't forget to curse the neo-liberal regimes and America :)\e[0m"
 doas git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins/fast-syntax-highlighting
+git clone https://github.com/pystardust/ytfzf
+doas make -C ~/ytfzf install doc
+rm -rf ytfzf
 mkdir -p ~/.cache/zsh ~/data ~/dl/git
 touch ~/.cache/zsh/history
 exit
