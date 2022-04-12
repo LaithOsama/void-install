@@ -113,9 +113,9 @@ echo -e "\e[32m  We're almost done, don't forget to curse the neo-liberal regime
 doas git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins/fast-syntax-highlighting
 git clone https://github.com/pystardust/ytfzf
 doas make -C ~/ytfzf install doc; rm -rf ytfzf
-git clone https://github.com/behdad/bicon.git
-./bicon/autogen.sh && ./bicon/configure && doas make -C ~/bicon && doas make -C ~/bicon install
-doas rm -rf bicon
+wget https://github.com/behdad/bicon/releases/download/0.5/bicon-0.5.tar.gz; tar xvf bicon-0.5.tar.gz
+./bicon-0.5/autogen.sh && ./bicon-0.5/configure && doas make -C ~/bicon-0.5 && doas make -C ~/bicon-0.5 install
+doas rm -rf bicon-0.5
 mkdir -p ~/.cache/zsh ~/data ~/dl/git
 touch ~/.cache/zsh/history
 exit
