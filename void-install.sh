@@ -5,15 +5,15 @@ printf '\033c'
 echo -e "\e[32m  Preparing Disk and Filesystems for installation ...\e[0m"
 mkfs.ext4 /dev/sda1
 mkfs.ext4 /dev/sda2
-mount /dev/sda2 /mnt
+mount /dev/sda1 /mnt
 mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
+mount /dev/sda2 /mnt/boot
 echo -e "\e[32m  Doing the base installation ...\e[0m"
 REPO=https://alpha.de.repo.voidlinux.org/current
 ARCH=x86_64
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux4.9 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -39,7 +39,7 @@ xbps-reconfigure -f glibc-locales
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
+echo 'GRUB_CMDLINE_LINUX="root=/dev/sda1 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo ffmpeg \
@@ -104,7 +104,7 @@ git clone --depth=1 https://github.com/LaithOsama/dwm.git ~/.local/src/dwm
 doas make -C ~/.local/src/dwm install
 git clone --depth=1 https://github.com/LaithOsama/st.git ~/.local/src/st
 doas make -C ~/.local/src/st install
-doas xbps-install -y fribidi-devel automake
+doas xbps-install -y fribidi-devel automake m4 bison
 git clone --depth=1 https://github.com/LaithOsama/dmenu.git ~/.local/src/dmenu
 doas make -C ~/.local/src/dmenu install
 git clone --depth=1 https://github.com/LaithOsama/slstatus.git ~/.local/src/slstatus
