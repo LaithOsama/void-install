@@ -6,9 +6,9 @@ printf '\033c'
 echo -e "\e[32m  Preparing Disk and Filesystems for installation ...\e[0m"
 mkfs.ext4 /dev/sda1
 mkfs.ext4 /dev/sda2
-mount /dev/sda2 /mnt
+mount /dev/sda1 /mnt
 mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
+mount /dev/sda2 /mnt/boot
 
 echo -e "\e[32m  Doing the base installation ...\e[0m"
 REPO=https://alpha.de.repo.voidlinux.org/current/musl
@@ -44,7 +44,7 @@ nvim /etc/rc.conf
 
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
-echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
+echo 'GRUB_CMDLINE_LINUX="root=/dev/sda1 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
