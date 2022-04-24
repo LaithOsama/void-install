@@ -15,7 +15,7 @@ REPO=https://alpha.de.repo.voidlinux.org/current/musl
 ARCH=x86_64-musl
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-minimal bash openssl eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -Sy -r /mnt -R "$REPO" base-minimal bash openssl eudev dhcpcd neovim e2fsprogs wget grub
 wget https://github.com/LaithOsama/kernel/raw/main/linux5.16-5.16.18_1.x86_64-musl.xbps
 xbps-rindex --add linux5.16-5.16.18_1.x86_64-musl.xbps
 XBPS_ARCH=$ARCH xbps-install -r /mnt --repository /root/ -y linux5.16
@@ -44,23 +44,18 @@ nvim /etc/rc.conf
 
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 echo 'GRUB_CMDLINE_LINUX="root=/dev/sda2 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo \
-hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
-mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf curl ueberzug \
+hsetroot sxiv zathura zathura-pdf-mupdf maim xset xrandr xclip qutebrowser git redshift python3-adblock \
+mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools curl lf ueberzug \
 zsh transmission setxkbmap xmodmap xcape mdocml pfetch fzf bat jq bc xz picom opendoas dejavu-fonts-ttf slock \
 htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions
 
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
-read -p "Do you need extra packages like libreoffice, gimp and kodi ? [y/N] " answer
-if [[ $answer = y ]] ; then
-  xbps-install -y libreoffice-calc gimp fractal kodi
-fi
 rm -rf /var/cache/xbps/*
 
 echo -e "\e[32m  Setting up users, mouse speed, keyboard langs ... etc.\e[0m"
@@ -108,8 +103,7 @@ rm -rf *.* .*
 
 echo -e "\e[32m  Downloading and managing dotfiles ...\e[0m"
 git clone https://github.com/LaithOsama/.dotfiles.git 
-cd .dotfiles && stow .
-cd ..
+mv .dotfiles/.* ~ && rm -rf .git .dotfiles
 
 echo -e "\e[32m  Install dwm, st, slstatus and dmenu (Suckless Tools) ...\e[0m"
 git clone --depth=1 https://github.com/LaithOsama/dwm.git ~/.local/src/dwm
