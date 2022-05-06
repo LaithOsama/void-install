@@ -13,7 +13,7 @@ REPO=https://alpha.de.repo.voidlinux.org/current
 ARCH=x86_64
 mkdir -p /mnt/var/db/xbps/keys
 cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
-XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux5.10 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub os-prober ntfs-3g
+XBPS_ARCH=$ARCH xbps-install -S -r /mnt -R "$REPO" base-minimal linux4.9 bash openssl dracut eudev dhcpcd neovim e2fsprogs wget grub
 echo -e "\e[32m  Entering the Chroot ...\e[0m"
 mount --rbind /sys /sys && mount --make-rslave /mnt/sys
 mount --rbind /dev /mnt/dev && mount --make-rslave /mnt/dev
@@ -38,21 +38,16 @@ nvim /etc/default/libc-locales
 xbps-reconfigure -f glibc-locales
 echo -e "\e[32m  Grub installation ...\e[0m"
 grub-install /dev/sda
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 echo 'GRUB_CMDLINE_LINUX="root=/dev/sda1 rootfstype=ext4"' >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 echo -e "\e[32m  Install Packages ...\e[0m"
 xbps-install -Sy xorg-minimal gcc make pkg-config libXft-devel libX11-devel libXinerama-devel xdpyinfo ffmpeg \
-hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr xclip qutebrowser git redshift python3-adblock \
+hsetroot sxiv zathura zathura-pdf-mupdf stow maim xset xrandr dunst xclip qutebrowser git redshift python3-adblock \
 mpv cmus cmus-opus cmus-flac newsboat unzip wget calcurse yt-dlp xdotool dosfstools lf curl ueberzug \
-zsh transmission setxkbmap xmodmap xcape mdocml pfetch fzf bat jq bc xz picom opendoas dejavu-fonts-ttf slock \
+zsh transmission setxkbmap xmodmap xcape mdocml pfetch fzf bat jq bc xz picom opendoas slock \
 htop alsa-utils xbacklight unclutter-xfixes st-terminfo zsh-autosuggestions void-repo-nonfree; xbps-install -Sy unrar
 echo -e "\e[32m  Install intel drivers ...\e[0m"
 xbps-install -y xf86-video-intel mesa-vaapi libva-intel-driver
-read -p "Do you need extra packages like libreoffice, gimp and kodi ? [y/N] " answer
-if [[ $answer = y ]] ; then
-  xbps-install -y libreoffice-calc gimp fractal kodi
-fi
 rm -rf /var/cache/xbps/*
 echo -e "\e[32m  Setting up users, mouse speed, keyboard langs ... etc.\e[0m"
 passwd
@@ -83,7 +78,6 @@ rm -rf /etc/sv/agetty-tty3
 rm -rf /etc/sv/agetty-tty4
 rm -rf /etc/sv/agetty-tty5
 rm -rf /etc/sv/agetty-tty6
-rm -rf /etc/sv/sshd
 vi3_path=/home/laith/void-install3.sh
 sed '1,/^#part3$/d' void-install2.sh > $vi3_path
 chown laith:laith $vi3_path
@@ -104,7 +98,7 @@ git clone --depth=1 https://github.com/LaithOsama/dwm.git ~/.local/src/dwm
 doas make -C ~/.local/src/dwm install
 git clone --depth=1 https://github.com/LaithOsama/st.git ~/.local/src/st
 doas make -C ~/.local/src/st install
-doas xbps-install -y fribidi-devel automake m4 bison
+doas xbps-install -y fribidi-devel
 git clone --depth=1 https://github.com/LaithOsama/dmenu.git ~/.local/src/dmenu
 doas make -C ~/.local/src/dmenu install
 git clone --depth=1 https://github.com/LaithOsama/slstatus.git ~/.local/src/slstatus
@@ -113,9 +107,6 @@ echo -e "\e[32m  We're almost done, don't forget to curse the neo-liberal regime
 doas git clone https://github.com/zdharma-continuum/fast-syntax-highlighting /usr/share/zsh/plugins/fast-syntax-highlighting
 git clone https://github.com/pystardust/ytfzf
 doas make -C ~/ytfzf install doc; rm -rf ytfzf
-wget https://github.com/behdad/bicon/releases/download/0.5/bicon-0.5.tar.gz; tar xvf bicon-0.5.tar.gz
-./bicon-0.5/autogen.sh && ./bicon-0.5/configure && doas make -C ~/bicon-0.5 && doas make -C ~/bicon-0.5 install
-doas rm -rf bicon-0.5
 mkdir -p ~/.cache/zsh ~/data ~/dl/git
 touch ~/.cache/zsh/history
 exit
